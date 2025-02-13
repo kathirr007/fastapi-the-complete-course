@@ -1,4 +1,4 @@
-from Enemy import *
+from enemy import Enemy
 
 
 class Ogre(Enemy):

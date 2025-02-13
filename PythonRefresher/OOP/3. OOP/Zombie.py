@@ -1,5 +1,4 @@
-from test import MyClass
-from Enemy import Enemy
+from enemy import Enemy
 
 
 class Zombie(Enemy):
