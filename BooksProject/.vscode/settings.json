@@ -1,0 +1,4 @@
+{
+    "python.pythonPath": "localvenvbooks/Scripts/python",
+    "python.linting.pylintPath": "localvenvbooks/Scripts/pylint"
+}
