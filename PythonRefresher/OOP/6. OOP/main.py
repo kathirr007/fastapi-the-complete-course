@@ -3,6 +3,7 @@ from Ogre import *
 from Enemy import *
 from Hero import *
 
+
 def battle(e1: Enemy, e2: Enemy):
     e1.talk()
     e2.talk()
@@ -49,12 +50,10 @@ def hero_battle(hero: Hero, enemy: Enemy):
 # zombie = Zombie(10, 1)
 # ogre = Ogre(20, 3)
 # battle(zombie, ogre)
-        
+
 zombie = Zombie(10, 1)
 hero = Hero(10, 1)
-weapon = Weapon('Sword', 5)
+weapon = Weapon("Sword", 5)
 hero.weapon = weapon
 hero.equip_weapon()
 hero_battle(hero, zombie)
-
-
