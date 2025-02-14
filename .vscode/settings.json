@@ -1,0 +1,9 @@
+{
+  "python.pipenvPath": ".venv/Scripts/pip",
+  "pylint.path": [".venv/Scripts/python", "-m", "pylint"],
+  "python.analysis.packageIndexDepths": ["", 2],
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnSave": true
+  },
+}

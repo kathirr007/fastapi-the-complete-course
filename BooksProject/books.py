@@ -2,10 +2,9 @@
 Fast API for Books
 """
 
-from fastapi import FastAPI, Body
+from fastapi import Body, FastAPI
 
 app = FastAPI()
-
 
 BOOKS = [
     {"title": "Title One", "author": "Author One", "category": "science"},
