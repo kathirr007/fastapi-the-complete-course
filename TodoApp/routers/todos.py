@@ -3,6 +3,7 @@ from pydantic import BaseModel, Field
 from models import Todos
 from starlette import status
 from database import db_dependency
+from .auth import user_dependency
 
 router = APIRouter()
 
@@ -43,9 +44,16 @@ async def get_todo_by_id(db: db_dependency, todo_id: int = Path(gt=0)):
 
 
 @router.post("/todos", status_code=status.HTTP_201_CREATED)
-async def add_todo(db: db_dependency, todo_request: TodoRequest):
+async def add_todo(user: user_dependency, db: db_dependency, todo_request: TodoRequest):
 
-    todo_model = Todos(**todo_request.model_dump())
+    if user is None:
+        raise HTTPException(
+            status.HTTP_401_UNAUTHORIZED, detail="User is not authenticated."
+        )
+
+    todo_model: Todos = Todos(**todo_request.model_dump())
+
+    todo_model.owner_id = user.get("id")
 
     db.add(todo_model)
     db.commit()

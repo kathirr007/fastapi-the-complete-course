@@ -28,7 +28,7 @@ SECRET_KEY = "thisMyVeryVerySecretKey"
 ALGORITHM = "HS256"
 
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_bearer = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/token")
 
 
 def authenticate_user(username: str, password: str, db):
@@ -68,15 +68,17 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]):
         )
 
 
-router = APIRouter()
+user_dependency = Annotated[dict, Depends(get_current_user)]
+
+router = APIRouter(prefix="/auth", tags=["auth"])
 
 
-@router.get("/auth")
+@router.get("")
 async def auth_user():
     return {"user": "authenticated"}
 
 
-@router.post("/auth", status_code=status.HTTP_201_CREATED)
+@router.post("", status_code=status.HTTP_201_CREATED)
 async def create_user(db: db_dependency, create_user_request: CreateUserRequest):
     created_user_model = Users(
         email=create_user_request.email,
@@ -92,14 +94,16 @@ async def create_user(db: db_dependency, create_user_request: CreateUserRequest)
     db.commit()
 
 
-@router.post("/auth/token", response_model=Token)
+@router.post("/token", response_model=Token)
 async def login_for_authentication_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: db_dependency
 ):
     user = authenticate_user(form_data.username, form_data.password, db)
 
     if not user:
-        raise HTTPException(status.HTTP_404_NOT_FOUND, detail="User not authenticated.")
+        raise HTTPException(
+            status.HTTP_401_UNAUTHORIZED, detail="User not authenticated."
+        )
         # return "Authentication failed."
 
     token = create_access_token(user.username, user.id, timedelta(minutes=20))
