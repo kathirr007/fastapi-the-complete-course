@@ -2,7 +2,7 @@ from database import Base
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
 
 
-class Users(Base):
+class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -15,7 +15,7 @@ class Users(Base):
     role = Column(String)
 
 
-class Todos(Base):
+class Todo(Base):
     __tablename__ = "todos"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -23,5 +23,5 @@ class Todos(Base):
     description = Column(String)
     priority = Column(Integer)
     complete = Column(Boolean, default=False)
-    # owner_id = Column(Integer, ForeignKey(Users.id))
+    # owner_id = Column(Integer, ForeignKey(User.id))
     owner_id = Column(Integer, ForeignKey("users.id"))
